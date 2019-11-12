@@ -8,7 +8,7 @@ var express = require("express");
 var app = express();
 
 var api = new ProtoPost({
-  //callback take an object as input, and return a json-serializable object
+  //callbacks take an object as input, and return a json-serializable object
   echo: (data) => data,
   ping: (data) => Date.now(),
   //ProtoPost objects can be used in place of callbacks for a nested structure
@@ -28,6 +28,16 @@ var api = new ProtoPost({
 app.use("/api", api.router);
 
 app.listen(3000, () => console.log("Listening on port 3000!"))
+```
+```shell
+This will create an api with the following POST routes:
+/api                    # "welcome to the api!"
+/api/echo               # echos back the json sent
+/api/ping               # gives the current time
+/api/test/foo           # "foo"
+/api/test/bar           # "bar"
+/api/errors/your-fault  # returns an error 400
+/api/errors/my-fault    # returns an error 500
 ```
 
 ## Notes
