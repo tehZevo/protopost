@@ -41,11 +41,5 @@ This will create an api with the following POST routes:
 /api/errors/my-fault    # returns an error 500
 ```
 
-## Notes
-* Each route callback should take an object as input, and return an object
-* Exceptions thrown within a callback will result in a 500 status
-* Errors returned from the callback will result in a 400 status
-* ProtoPost objects can be nested
-
 ## TODO
 * Allow removal of routes
