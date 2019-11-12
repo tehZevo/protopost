@@ -30,6 +30,3 @@ app.listen(3000, () => console.log("Listening on port 3000!"))
 * Exceptions thrown within a callback will result in a 500 status
 * Errors returned from the callback will result in a 400 status
 * ProtoPost objects can be nested
-
-## TODO
-* Allow ProtoPost root routes to have callbacks as well
