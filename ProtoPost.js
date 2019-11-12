@@ -11,7 +11,7 @@ module.exports = class ProtoPost
     {
       this.add("", cb);
     }
-    
+
     this.addAll(routes);
   }
 
@@ -47,7 +47,7 @@ module.exports = class ProtoPost
       catch(err)
       {
         console.error(err);
-        res.status(500).send(err.message);
+        res.sendStatus(500);
       }
     });
   }
