@@ -29,8 +29,9 @@ app.use("/api", api.router);
 
 app.listen(3000, () => console.log("Listening on port 3000!"))
 ```
-```shell
+
 This will create an api with the following POST routes:
+```shell
 /api                    # "welcome to the api!"
 /api/echo               # echos back the json sent
 /api/ping               # gives the current time
