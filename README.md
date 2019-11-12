@@ -13,8 +13,8 @@ var api = new ProtoPost({
   ping: (data) => Date.now(),
   //ProtoPost objects can be used in place of callbacks for a nested structure
   test: new ProtoPost({
-    foo: (data) => "foo"},
-    bar: (data) => "bar"},
+    foo: (data) => "foo",
+    bar: (data) => "bar",
   }),
   errors: new ProtoPost({
     //errors returned result in http status 400

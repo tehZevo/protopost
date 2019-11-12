@@ -6,8 +6,8 @@ var api = new ProtoPost({
   echo: (data) => data,
   ping: (data) => Date.now(),
   test: new ProtoPost({
-    foo: (data) => "foo"},
-    bar: (data) => "bar"},
+    foo: (data) => "foo",
+    bar: (data) => "bar",
   }),
   errors: new ProtoPost({
     "your-fault": (data) => new Error("your fault"),
