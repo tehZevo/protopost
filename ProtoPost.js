@@ -2,11 +2,16 @@ var express = require("express");
 
 module.exports = class ProtoPost
 {
-  constructor(routes={})
+  constructor(routes={}, cb)
   {
     this.router = express.Router();
     this.router.use(express.json());
 
+    if(cb != null)
+    {
+      this.add("", cb);
+    }
+    
     this.addAll(routes);
   }
 
