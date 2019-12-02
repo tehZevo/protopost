@@ -49,7 +49,7 @@ This will create an api with the following POST routes:
 
 ### Client
 ```js
-var protopost = require("protopost.js").client;
+var protopost = require("protopost").client;
 
 (async () =>
 {
