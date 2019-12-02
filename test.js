@@ -1,5 +1,6 @@
-var ProtoPost = require("./ProtoPost.js");
 var express = require("express");
+var ProtoPost = require("./ProtoPost.js");
+
 var app = express();
 
 var api = new ProtoPost({

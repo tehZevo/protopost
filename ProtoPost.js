@@ -1,6 +1,7 @@
 var express = require("express");
+var rp = require("request-promise");
 
-module.exports = class ProtoPost
+class ProtoPost
 {
   constructor(routes={}, cb)
   {
@@ -57,3 +58,19 @@ module.exports = class ProtoPost
     //TODO
   }
 }
+
+async function protopostClient(url, route, data)
+{
+  var options = {
+    method: "POST",
+    uri: url + route,
+    body: data,
+    json: true,
+  }
+
+  return rp(options);
+}
+
+ProtoPost.client = protopostClient;
+
+module.exports = ProtoPost;

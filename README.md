@@ -1,7 +1,13 @@
 # ProtoPost
 Quickly create POST-only REST APIs using Express routers.
 
+## Installation
+```shell
+npm install https://github.com/tehzevo/protopost
+```
+
 ## Usage
+### Server
 ```js
 var ProtoPost = require("protopost");
 var express = require("express");
@@ -39,6 +45,18 @@ This will create an api with the following POST routes:
 /api/test/bar           # "bar"
 /api/errors/your-fault  # returns an error 400
 /api/errors/my-fault    # returns an error 500
+```
+
+### Client
+```js
+var protopost = require("protopost.js").client;
+
+(async () =>
+{
+  var url = "http://localhost:3000/api";
+  var result = await protopost(url, "/echo", {"Hello": "world!"});
+  console.log(result) // { Hello: 'world!' }
+})();
 ```
 
 ## TODO
