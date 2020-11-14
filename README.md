@@ -55,7 +55,6 @@ This will create an api with the following POST routes:
 var protopost = require("protopost").client;
 
 (async () => {
-  var protopost = ProtoPost.client;
   var hello = await protopost("http://127.0.0.1:3000", "/api");
   console.log(hello);
   var time = await protopost("http://127.0.0.1:3000", "/api/ping");
