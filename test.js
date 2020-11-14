@@ -1,7 +1,4 @@
-var express = require("express");
 var ProtoPost = require("./ProtoPost.js");
-
-var app = express();
 
 var api = new ProtoPost({
   echo: (data) => data,
@@ -16,6 +13,18 @@ var api = new ProtoPost({
   }),
 }, (data) => "welcome to the api!");
 
-app.use("/api", api.router);
+api.start(3000, "/api");
 
-app.listen(3000, () => console.log("Listening on port 3000!"));
+//alternatively, you can use your own express instance:
+// var app = express();
+// app.use("/api", api.router);
+// app.listen(3000, () => console.log("Listening on port 3000!"));
+
+//testing client:
+(async () => {
+  var protopostClient = ProtoPost.client;
+  var hello = await protopostClient("http://127.0.0.1:3000", "/api");
+  console.log(hello);
+  var time = await protopostClient("http://127.0.0.1:3000", "/api/ping");
+  console.log(`The time is now ${new Date(time).toLocaleString()}`);
+})();

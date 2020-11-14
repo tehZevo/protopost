@@ -1,5 +1,5 @@
 var express = require("express");
-var rp = require("request-promise");
+var fetch = require("node-fetch");
 
 class ProtoPost
 {
@@ -57,18 +57,31 @@ class ProtoPost
   {
     //TODO
   }
+
+  //just starts express on port 80 by default and routes from /
+  start(port=80, route="/")
+  {
+    var app = express();
+    app.use(route, this.router);
+    app.listen(port, () => console.log(`Listening on port ${port}!`));
+
+    this.app = app;
+  }
+
+  //TODO: add stop lol
 }
 
 async function protopostClient(url, route, data)
 {
   var options = {
     method: "POST",
-    uri: url + route,
+    //uri: url + route,
     body: data,
-    json: true,
+    //json: true,
+    headers: { 'Content-Type': 'application/json' },
   }
 
-  return rp(options);
+  return fetch(url + route, options).then((res) => res.json());
 }
 
 ProtoPost.client = protopostClient;

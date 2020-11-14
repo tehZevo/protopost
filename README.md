@@ -10,8 +10,6 @@ npm install https://github.com/tehzevo/protopost
 ### Server
 ```js
 var ProtoPost = require("protopost");
-var express = require("express");
-var app = express();
 
 var api = new ProtoPost({
   //callbacks take an object as input, and return a json-serializable object
@@ -31,8 +29,13 @@ var api = new ProtoPost({
 //the final argument to ProtoPost is an optional callback for "/"
 }, (data) => "welcome to the api!");
 
-app.use("/api", api.router);
+//start the server using express on port 3000 at /api
+api.start(3000, "/api");
 
+//or, if you want to use your own express instance instead of .start()
+var express = require("express");
+var app = express();
+app.use("/api", api.router);
 app.listen(3000, () => console.log("Listening on port 3000!"))
 ```
 
@@ -51,11 +54,12 @@ This will create an api with the following POST routes:
 ```js
 var protopost = require("protopost").client;
 
-(async () =>
-{
-  var url = "http://localhost:3000/api";
-  var result = await protopost(url, "/echo", {"Hello": "world!"});
-  console.log(result) // { Hello: 'world!' }
+(async () => {
+  var protopost = ProtoPost.client;
+  var hello = await protopost("http://127.0.0.1:3000", "/api");
+  console.log(hello);
+  var time = await protopost("http://127.0.0.1:3000", "/api/ping");
+  console.log(`The time is now ${new Date(time).toLocaleString()}`);
 })();
 ```
 
