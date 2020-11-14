@@ -32,15 +32,22 @@ class ProtoPost
       return;
     }
 
-    this.router.post("/" + name, (req, res) =>
+    this.router.post("/" + name, async (req, res) =>
     {
       try
       {
-        var val = cb(req.body);
+        var val = await cb(req.body);
+
         if(val instanceof Error)
         {
           res.status(400).send(val.message);
           return;
+        }
+
+        //catch functions that have no return value, replace results with null
+        if(val == null)
+        {
+          val = null;
         }
 
         res.json(val);
@@ -83,7 +90,16 @@ async function protopostClient(url, route="", data={})
     headers: { 'Content-Type': 'application/json' },
   }
 
-  return fetch(url + route, options).then((res) => res.json());
+  return fetch(url + route, options).then((res) =>
+  {
+    //catch non-ok statuses
+    if(!res.ok)
+    {
+      throw new Error(`Status ${res.status}`)
+    }
+
+    return res.json();
+  });
 }
 
 ProtoPost.client = protopostClient;

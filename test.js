@@ -3,6 +3,7 @@ var ProtoPost = require("./ProtoPost.js");
 var api = new ProtoPost({
   echo: (data) => data,
   ping: (data) => Date.now(),
+  promise: async (data) => await new Promise((res, rej) => setTimeout(() => res(""), 1000)),
   test: new ProtoPost({
     foo: (data) => "foo",
     bar: (data) => "bar",
@@ -27,4 +28,6 @@ api.start(3000, "/api");
   console.log(hello);
   var time = await protopostClient("http://127.0.0.1:3000", "/api/ping");
   console.log(`The time is now ${new Date(time).toLocaleString()}`);
+  var wait = await protopostClient("http://127.0.0.1:3000", "/api/promise");
+  console.log("Hey that took a while!");
 })();
