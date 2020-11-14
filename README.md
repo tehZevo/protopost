@@ -15,6 +15,8 @@ var api = new ProtoPost({
   //callbacks take an object as input, and return a json-serializable object
   echo: (data) => data,
   ping: (data) => Date.now(),
+  //supports async routes
+  promise: async (data) => await new Promise((res, rej) => setTimeout(() => res(""), 1000)),
   //ProtoPost objects can be used in place of callbacks for a nested structure
   test: new ProtoPost({
     foo: (data) => "foo",
@@ -59,6 +61,8 @@ var protopost = require("protopost").client;
   console.log(hello);
   var time = await protopost("http://127.0.0.1:3000", "/api/ping");
   console.log(`The time is now ${new Date(time).toLocaleString()}`);
+  var wait = await protopostClient("http://127.0.0.1:3000", "/api/promise");
+  console.log("Hey that took a while!");
 })();
 ```
 
