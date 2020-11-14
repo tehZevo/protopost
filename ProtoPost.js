@@ -71,12 +71,14 @@ class ProtoPost
   //TODO: add stop lol
 }
 
-async function protopostClient(url, route, data)
+//TODO: sanitize url function?
+
+async function protopostClient(url, route="", data={})
 {
   var options = {
     method: "POST",
     //uri: url + route,
-    body: data,
+    body: JSON.stringify(data),
     //json: true,
     headers: { 'Content-Type': 'application/json' },
   }
