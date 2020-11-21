@@ -6,7 +6,8 @@ class ProtoPost
   constructor(routes={}, cb)
   {
     this.router = express.Router();
-    this.router.use(express.json());
+    //allow non-arrays/objects
+    this.router.use(express.json({strict: false}));
 
     if(cb != null)
     {
@@ -80,13 +81,12 @@ class ProtoPost
 
 //TODO: sanitize url function?
 
+//this will be deprecated and replaced with symbol
 async function protopostClient(url, route="", data={})
 {
   var options = {
     method: "POST",
-    //uri: url + route,
     body: JSON.stringify(data),
-    //json: true,
     headers: { 'Content-Type': 'application/json' },
   }
 
@@ -102,6 +102,17 @@ async function protopostClient(url, route="", data={})
   });
 }
 
+//this will eventually replace protopostClient
+function protopostClientSymbol(url)
+{
+  var func = async (data=null, route="") => await protopostClient(url, route, data);
+  func.url = url
+  func.symbol = (path) => protopostClientSymbol(func.url + path);
+
+  return func
+}
+
 ProtoPost.client = protopostClient;
+ProtoPost.symbol = protopostClientSymbol;
 
 module.exports = ProtoPost;

@@ -15,6 +15,8 @@ var api = new ProtoPost({
   //callbacks take an object as input, and return a json-serializable object
   echo: (data) => data,
   ping: (data) => Date.now(),
+  one: (data) => 1,
+  add: (data) => data[0] + data[1],
   //supports async routes
   promise: async (data) => await new Promise((res, rej) => setTimeout(() => res(""), 1000)),
   //ProtoPost objects can be used in place of callbacks for a nested structure
@@ -46,6 +48,9 @@ This will create an api with the following POST routes:
 /api                    # "welcome to the api!"
 /api/echo               # echos back the json sent
 /api/ping               # gives the current time
+/api/one                # returns 1
+/api/add                # adds inputs [0] and [1]
+/api/promise            # waits one second and then returns an empty string
 /api/test/foo           # "foo"
 /api/test/bar           # "bar"
 /api/errors/your-fault  # returns an error 400
@@ -63,6 +68,18 @@ var protopost = require("protopost").client;
   console.log(`The time is now ${new Date(time).toLocaleString()}`);
   var wait = await protopostClient("http://127.0.0.1:3000", "/api/promise");
   console.log("Hey that took a while!");
+})();
+
+//using the "symbol" client
+var root = ProtoPost.symbol("http://127.0.0.1:3000/api");
+var one = root.symbol("/one");
+var add = root.symbol("/add");
+
+(async () => {
+  var a = await one();
+  var b = await one();
+  var c = await add([a, b]);
+  console.log(a, "+", b, "=", c);
 })();
 ```
 
