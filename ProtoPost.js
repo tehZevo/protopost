@@ -95,7 +95,7 @@ async function protopostClient(url, route="", data={})
     //catch non-ok statuses
     if(!res.ok)
     {
-      throw new Error(`Status ${res.status}`)
+      throw new Error(`Status ${res.status} from ${url+route}`)
     }
 
     return res.json();
