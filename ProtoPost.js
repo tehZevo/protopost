@@ -1,6 +1,24 @@
 var express = require("express");
 var fetch = require("node-fetch");
 
+//turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
+function sanitize_url(url)
+{
+  //if its just numbers then a slash
+  if(url.match(/^\d+\//))
+  {
+    return "http://127.0.0.1:" + url
+  }
+
+  //if it lacks http
+  if(!url.match(/^https?:\/\//))
+  {
+    return "http://" + url
+  }
+
+  return url
+}
+
 class ProtoPost
 {
   constructor(routes={}, cb)
