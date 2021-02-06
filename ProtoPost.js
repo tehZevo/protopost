@@ -2,7 +2,7 @@ var express = require("express");
 var fetch = require("node-fetch");
 
 //turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
-function sanitize_url(url)
+function sanitizeUrl(url)
 {
   //if its just numbers then a slash
   if(url.match(/^\d+\//))
@@ -97,8 +97,6 @@ class ProtoPost
   //TODO: add stop lol
 }
 
-//TODO: sanitize url function?
-
 //this will be deprecated and replaced with symbol
 async function protopostClient(url, route="", data={})
 {
@@ -108,12 +106,15 @@ async function protopostClient(url, route="", data={})
     headers: { 'Content-Type': 'application/json' },
   }
 
-  return fetch(url + route, options).then((res) =>
+  var fullUrl = url + route;
+  fullUrl = sanitizeUrl(fullUrl);
+
+  return fetch(fullUrl, options).then((res) =>
   {
     //catch non-ok statuses
     if(!res.ok)
     {
-      throw new Error(`Status ${res.status} from ${url+route}`)
+      throw new Error(`Status ${res.status} from ${fullUrl}`)
     }
 
     return res.json();
@@ -123,6 +124,7 @@ async function protopostClient(url, route="", data={})
 //this will eventually replace protopostClient
 function protopostClientSymbol(url)
 {
+  url = sanitizeUrl(url);
   var func = async (data=null, route="") => await protopostClient(url, route, data);
   func.url = url
   func.symbol = (path) => protopostClientSymbol(func.url + path);
