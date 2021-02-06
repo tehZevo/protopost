@@ -5,7 +5,7 @@ var fetch = require("node-fetch");
 function sanitizeUrl(url)
 {
   //if its just numbers then a slash
-  if(url.match(/^\d+\//))
+  if(url.match(/^\d+\//) || url.match(/^\d+$/))
   {
     return "http://127.0.0.1:" + url
   }
