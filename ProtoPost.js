@@ -1,5 +1,6 @@
 var express = require("express");
 var fetch = require("node-fetch");
+var cors = require("cors");
 
 //turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
 function sanitizeUrl(url)
@@ -88,6 +89,7 @@ class ProtoPost
   start(port=80, route="/")
   {
     var app = express();
+    app.use(cors());
     app.use(route, this.router);
     app.listen(port, () => console.log(`Listening on port ${port}!`));
 
