@@ -2,24 +2,6 @@ var express = require("express");
 var fetch = require("node-fetch");
 var cors = require("cors");
 
-//turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
-function sanitizeUrl(url)
-{
-  //if its just numbers then a slash
-  if(url.match(/^\d+\//) || url.match(/^\d+$/))
-  {
-    return "http://127.0.0.1:" + url
-  }
-
-  //if it lacks http
-  if(!url.match(/^https?:\/\//))
-  {
-    return "http://" + url
-  }
-
-  return url
-}
-
 class ProtoPost
 {
   constructor(routes={}, cb)
@@ -100,7 +82,7 @@ class ProtoPost
 }
 
 //this will be deprecated and replaced with symbol
-async function protopostClient(url, route="", data={})
+async function protopostClient(url, data={})
 {
   var options = {
     method: "POST",
@@ -108,33 +90,19 @@ async function protopostClient(url, route="", data={})
     headers: { 'Content-Type': 'application/json' },
   }
 
-  var fullUrl = url + route;
-  fullUrl = sanitizeUrl(fullUrl);
-
-  return fetch(fullUrl, options).then((res) =>
+  return fetch(url, options).then((res) =>
   {
     //catch non-ok statuses
     if(!res.ok)
     {
-      throw new Error(`Status ${res.status} from ${fullUrl}`)
+      throw new Error(`Status ${res.status} from ${url}`)
     }
 
     return res.json();
   });
 }
 
-//this will eventually replace protopostClient
-function protopostClientSymbol(url)
-{
-  url = sanitizeUrl(url);
-  var func = async (data=null, route="") => await protopostClient(url, route, data);
-  func.url = url
-  func.symbol = (path) => protopostClientSymbol(func.url + path);
-
-  return func
-}
 
 ProtoPost.client = protopostClient;
-ProtoPost.symbol = protopostClientSymbol;
 
 module.exports = ProtoPost;

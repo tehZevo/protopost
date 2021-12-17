@@ -61,25 +61,15 @@ This will create an api with the following POST routes:
 ```js
 var protopost = require("protopost").client;
 
+var HOST = "http://127.0.0.1:3000";
+
 (async () => {
-  var hello = await protopost("http://127.0.0.1:3000", "/api");
+  var hello = await protopost(`${HOST}/api`);
   console.log(hello);
-  var time = await protopost("http://127.0.0.1:3000", "/api/ping");
+  var time = await protopost(`${HOST}/api/ping`);
   console.log(`The time is now ${new Date(time).toLocaleString()}`);
-  var wait = await protopostClient("http://127.0.0.1:3000", "/api/promise");
+  var wait = await protopost(`${HOST}/api/promise`);
   console.log("Hey that took a while!");
-})();
-
-//using the "symbol" client
-var root = ProtoPost.symbol("http://127.0.0.1:3000/api");
-var one = root.symbol("/one");
-var add = root.symbol("/add");
-
-(async () => {
-  var a = await one();
-  var b = await one();
-  var c = await add([a, b]);
-  console.log(a, "+", b, "=", c);
 })();
 ```
 
