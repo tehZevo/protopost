@@ -8,7 +8,7 @@ class ProtoPost
   {
     this.router = express.Router();
     //allow non-arrays/objects
-    this.router.use(express.json({strict: false}));
+    this.router.use(express.json({strict: false, limit: "5mb"}));
 
     if(cb != null)
     {
