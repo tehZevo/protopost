@@ -19,6 +19,9 @@ var api = new ProtoPost({
     //errors thrown result in http status 500
     "my-fault": (data) => {throw Error("my fault")},
   }),
+  get: new ProtoPost(
+    () => "hello get"
+  , get=true),
 //the final argument to ProtoPost is an optional callback for "/"
 }, (data) => "welcome to the api!");
 
@@ -36,4 +39,6 @@ var HOST = "http://127.0.0.1:3000";
   console.log(`The time is now ${new Date(time).toLocaleString()}`);
   var wait = await protopost(`${HOST}/api/promise`);
   console.log("Hey that took a while!");
+  var get = await protopost(`${HOST}/api/get`, get=true);
+  console.log(get);
 })();

@@ -4,16 +4,23 @@ var cors = require("cors");
 
 class ProtoPost
 {
-  constructor(routes={}, cb)
+  constructor(routes={}, cb, get=false)
   {
     this.router = express.Router();
     //allow non-arrays/objects
     this.router.use(express.json({strict: false, limit: "5mb"}));
+    this.get = get;
+
+    if(typeof routes === "function")
+    {
+      cb = routes;
+    }
 
     if(cb != null)
     {
       this.add("", cb);
     }
+    console.log(cb, get)
 
     this.addAll(routes);
   }
@@ -34,7 +41,11 @@ class ProtoPost
       return;
     }
 
-    this.router.post("/" + name, async (req, res) =>
+    var method = this.get ? this.router.get : this.router.post;
+    //I LOVE JAVASCRIPT I LOVE JAVASCRIPT
+    method = method.bind(this.router)
+
+    method("/" + name, async (req, res) =>
     {
       try
       {
@@ -82,10 +93,10 @@ class ProtoPost
 }
 
 //this will be deprecated and replaced with symbol
-async function protopostClient(url, data={})
+async function protopostClient(url, data={}, get=false)
 {
   var options = {
-    method: "POST",
+    method: get ? "GET" : "POST",
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' },
   }
